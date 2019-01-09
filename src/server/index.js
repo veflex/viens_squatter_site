@@ -3,15 +3,17 @@
 // @root/index.js
 
 const express = require("express");
+const cors = require("cors");
 const port = 3000;
 const app = express();
 const baseURL = `http://localhost:${port}`;
 const api = require(__dirname + "/api")(app);
-const http = require("http");
+// const http = require("http");
 // APP CONFIG !!!
 app.use(express.json({
     extended: false
 }))
+app.use(cors())
 app.use(api.prefix, api.routers);
 
 // TEMPLATE VARS !!!

@@ -23,12 +23,35 @@ const userModel = function userModel(connection) {
         });
     };
 
-
+    const getByMail = function getUserByMail(clbk, id) {
+        const sql = `SELECT * FROM user WHERE email = ? OR nickname = ?`;
+        const q = connection.query(sql, [id, id], (err, user) => {
+          if (err) return clbk(err, null);
+          return clbk(null, ...user);
+        });
+        console.log(q.sql);
+    };
+    
+    const getVote = function getVote(clbk, id) {
+        const sql = `SELECT AVG(note) as note, count(note) as nb_votant FROM note WHERE id_is_noted = ?`;
+        const q = connection.query(sql, [id], (err, data) => {
+          if (err) return clbk(err, null);
+          return clbk(null, ...data);
+        });
+        console.log(q.sql);
+    };
+    const getTop = function getTop(clbk) {
+        const sql = `SELECT AVG(note) as note, count(note) as nb_votant FROM note`;
+        const q = connection.query(sql, (err, data) => {
+          if (err) return clbk(err, null);
+          return clbk(null, ...data);
+        });
+        console.log(q.sql);
+    };
 
     const create = function createUser(clbk, data) {
-        console.log(data);
-        const q = "INSERT INTO user (name,nickname,email,password, departement, sexe, img) VALUES (?,?,?,?,?,?,?)";
-        connection.query(q, [data.name, data.nickname, data.email, data.password, data.departement, data.sexe, data.img], (err, res, cols) => {
+        const q = "INSERT INTO user (name, nickname, sexe, email, password, img) VALUES (?, ?, ?, ?, ?, ?)";
+        connection.query(q, [data.name, data.nickname, data.sexe, data.email, data.password, data.img], (err, res, cols) => {
             if (err) return clbk(err, null);
             return clbk(null, res);
         });
@@ -61,7 +84,10 @@ const userModel = function userModel(connection) {
         getAll,
         create,
         remove,
-        update
+        update,
+        getByMail,
+        getVote,
+        getTop
     };
 };
 

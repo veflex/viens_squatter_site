@@ -13,11 +13,17 @@ const annonceAPI = function annonceAPI(connection) {
     router.get('/annonce', (req, res) => {
         annonceModel.getAll((err, dataset) => {
             res.send(dataset);
-        }, null);
+        }, req.query);
     });
 
     router.get('/annonce/:id', (req, res) => {
         annonceModel.get((err, dataset) => {
+            res.send(dataset);
+        }, req.params.id);
+    });
+
+    router.get('/user_annonce/:id', (req, res) => {
+        annonceModel.getUserAnnonce((err, dataset) => {
             res.send(dataset);
         }, req.params.id);
     });

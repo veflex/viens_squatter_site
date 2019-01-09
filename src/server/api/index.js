@@ -20,9 +20,6 @@ const api = function api() {
     // IMPORT DES ROUTES DE l'API ANNONCE
     const annonceRouter = require("./annonce")(database.connection);
 
-    //IMPORT DES ROUTES DE L'API ANONCE INNER USER
-    const annonceUserRouter = require("./annonce_user")(database.connection);
-
     //IMPORT DES ROUTES DE L'API COMMENT
     const commentRouter = require("./comment")(database.connection);
 
@@ -32,14 +29,25 @@ const api = function api() {
     //IMPORT DES ROUTES DE L'API MESSAGE
     const messageRouter = require("./message")(database.connection);
 
+    //IMPORT DES ROUTES DE L'API CITY
+    const cityRouter = require("./city")(database.connection);
+
+    //IMPORT DES ROUTES DE L'API DEPARTEMENT
+    const departementRouter = require("./departement")(database.connection);
+
+    //IMPORT DES ROUTES DE L'API NOTE
+    const noteRouter = require("./note")(database.connection);
+
 
 
     routers.push(userRouter); // aggrégation des routeurs dans un tableau
     routers.push(annonceRouter); // aggrégation des routeurs dans un tableau
-    routers.push(annonceUserRouter); // aggrégation des routeurs dans un tableau
     routers.push(commentRouter); // aggrégation des routeurs dans un tableau
     routers.push(themeRouter); // aggrégation des routeurs dans un tableau
     routers.push(messageRouter); // aggrégation des routeurs dans un tableau
+    routers.push(cityRouter); // aggrégation des routeurs dans un tableau
+    routers.push(departementRouter); // aggrégation des routeurs dans un tableau
+    routers.push(noteRouter); // aggrégation des routeurs dans un tableau
 
     return { // définition des propriétés publiques du module /api/index.js
         version: APIVersion,
