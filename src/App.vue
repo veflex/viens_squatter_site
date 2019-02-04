@@ -39,6 +39,8 @@ export default {
     height: auto;
   }
   #app {
+    user-select : none;
+
     height: auto;
     font-family: 'Roboto', sans-serif;
     padding-left: 200px;
@@ -104,18 +106,26 @@ export default {
     }
     .title{
     background: #273c75;
-    color: #b2224b;
-    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+    color: white;
+    // text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
     margin-bottom: 2%;
     padding: 10px;
     font-size: 30px;
     height: 24%;
   }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1024px) {
 		#app{
-      padding: 0
+      padding: 0;
+      h1{
+        text-align: center
+      }
     }
 	}
+  @media screen  and (max-width: 680px) {
+    #app{
+      height: auto;
+    }
+  }
 </style>
 

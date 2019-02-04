@@ -1,7 +1,7 @@
 <template>
     <div id="register" class="register">
-        <h2>Devenir Squatteur</h2>
-        <msg :msg="msg" :class="css"/>
+        <h2 class="title">Devenir Squatteur</h2>
+        <msg :msg="msg" :class="css" :reset='reset'/>
         <label for="name"></label>
         <input placeholder="Prénom" class="input" type="text" id="name" name="name" required minlength="3" v-model="user.name">
 
@@ -26,7 +26,7 @@
         <label for="verifPass"></label>
         <input placeholder="Répétez le mot de passe" class="input" type="password" id="verifPass" name="verifPass" required v-model="user.verifPass">
 
-        <button @click="register">click</button>
+        <button @click="register" class="signup">S'enregistrer</button>
     </div>
 </template>
 
@@ -66,6 +66,10 @@ export default {
               this.css = 'error';
             });
         }
+      },
+      reset(){
+        this.msg='';
+        this.css= ''
       }
     },
     components:{
@@ -74,13 +78,39 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
     .register{
-        user-select : none;
+        width: 40%;
+        min-width: 330px;
+        border: 2px solid #273c75;
+        display: flex;
+        align-items: center;
+        padding-bottom: 10px;
+        h2{
+            align-self: flex-start;
+            width: 100%;
+        }
     }
     ul{
         list-style: none;
         margin: 10px 0
     }
-    
+    .signup{
+        padding: 15px 20px;
+        border-radius: 5px;
+        background: #b2224b;
+        min-width: 150px;
+        border: 2px solid transparent;
+        color: white;
+        font-size: 23px;
+        font-weight: 500;
+        box-shadow: 3px 3px 10px 1px rgba(0,0,0,0.6);
+        cursor: pointer;
+        &:hover{
+            background: #FFF;
+            border: 2px solid #b2224b;
+            color: #b2224b
+        }
+    }
 </style>
+

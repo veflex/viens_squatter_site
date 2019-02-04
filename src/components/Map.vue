@@ -87,7 +87,7 @@ created(){
 <style lang="scss" scoped>
     .map{
         width: 100%;
-        height: 250px;
+        height: 100%;
     }
 </style>
 

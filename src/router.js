@@ -17,42 +17,32 @@ export default new Router({
     {
       path: '/squatter',
       name: 'squatter',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Squatter.vue')
+      component: () => import('./views/Squatter.vue')
     },
     {
     path: '/squat/:id',
     name: 'squat',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ './views/Annonce.vue')
+    component: () => import('./views/Annonce.vue')
     },    
     {
       path: '/recevoir',
       name: 'recevoir',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Recevoir.vue')
+      component: () => import('./views/Recevoir.vue')
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: () => import('./views/Update_annonce.vue')
     },
     {
       path: '/top',
       name: 'top',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Top.vue')
+      component: () => import('./views/Top.vue')
     },
     {
       path: '/connexion',
       name: 'connexion',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Connexion.vue'),
+      component: () => import('./views/Connexion.vue'),
       beforeEnter: (to, from, next) => {
         if (auth.getLocalToken()) next("/account");
         else next();
@@ -61,22 +51,33 @@ export default new Router({
     {
       path: '/account',
       name: 'account',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Account.vue'),
+      component: () => import('./views/Account.vue'),
       beforeEnter: (to, from, next) => {
         if (!auth.getLocalToken()) next("/connexion");
         else next();
-      }
+      },
+      children: [
+        {
+          path: 'infos',
+          name: 'infos',
+          component: () => import('./views/account_children/Infos.vue') 
+        },
+        {
+          path: 'my-created',
+          name: 'my-created',
+          component: () => import('./views/account_children/Squat_created.vue') 
+        },
+        {
+          path: 'my-signed',
+          name: 'my-signed',
+          component: () => import('./views/account_children/Squat_signed.vue') 
+        }
+      ]
     },
     {
       path: '/user/:id',
       name: 'user',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/User.vue')
+      component: () => import('./views/User.vue')
     }
   ]
 })

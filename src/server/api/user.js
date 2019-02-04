@@ -7,12 +7,24 @@ const userAPI = function userAPI(connection) {
     const userModel = require("../model/user")(connection);
     const bcrypt = require("bcrypt");
     const auth = require("./../utils/auth");
+    const multer = require('multer')
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+          cb(null, "src/assets/user_img/");
+        },
+        filename: function(req, file, cb) {
+          cb(null, Date.now() + "_" + file.originalname);
+        }
+      });
+      
+      const upload = multer({ storage });
 
 
 
     router.get('/user/:id', (req, res) => {
-        userModel.getOne((err, dataset) => {
-            res.send(dataset);
+        userModel.getOne((err, user) => {
+            user = auth.removeSensitiveInfo(user)
+            res.send(user);
         }, req.params.id);
     });
 
@@ -22,10 +34,10 @@ const userAPI = function userAPI(connection) {
         }, null);
     });
 
-    router.get('/user/note', (req, res) => {
+    router.get('/user/note/:id', (req, res) => {
         userModel.getVote((err, dataset) => {
             res.send(dataset);
-        }, null);
+        }, req.params.id);
     });
 
     router.post('/user', (req, res) => {
@@ -51,14 +63,15 @@ const userAPI = function userAPI(connection) {
         }, req.params.id);
     });
 
-    router.patch('/user/:id', (req, res) => {
+    router.patch('/user/:id',upload.single("uploader"), (req, res) => {
+        if (req.file){
+            req.body["img"] = req.file.filename;
+        }
+        console.log(req.body);
         userModel.update((err, dataset) => {
             if (err) return res.status(500).send(err);
             else return res.status(200).send(dataset);
-        }, {
-            body: req.body,
-            id: req.params.id
-        });
+        }, req.body);
     });
 
     router.post("/user/login", (req, res) => {

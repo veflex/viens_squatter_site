@@ -1,12 +1,12 @@
 <template>
     <div class="box" :class="css" v-if="msg">
         <span>{{ msg }}</span>
-        <span class="clickable close" @click="msg = ''">X</span>
+        <span class="clickable close" @click="reset">❌</span>
     </div>
 </template>
 <script>
 export default {
-    props: ['msg', 'css']
+    props: ['msg', 'css', 'reset']
 }
 </script>
 <style lang="scss" scoped>
@@ -19,7 +19,7 @@ export default {
   max-width: 100%;
   min-height: 30px;
   min-width: 220px;
-  padding: 2px 10px;
+  padding: 2px 30px;
   position: relative;
   text-align: center;
   margin: 10px 0

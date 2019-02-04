@@ -21,22 +21,27 @@ const annonceModel = function annonceModel(connection) {
         });
     };
     const update = function editAnnonce(clbk, data) {
-        const body = data.body;
-        const param = Object.keys(body)[0];
-        const value = body[param]
-        const q = `UPDATE annonce SET ${param} = ?, updated_at = NOW() WHERE annonce.id = ?`;
-        const payload = [value, data.id];
-        connection.query(q, payload, function (err, res, fields) {
+        console.log('ca update');
+        const sql = "UPDATE `annonce` SET `title` = ?, `description` = ? , `nb_participants` = ?, `datetime` = ?, `departement` = ?, `ville` = ?, `adresse` = ?, `cedex` = ?, `img` = ?, updated_at = CURRENT_TIMESTAMP WHERE `annonce`.`id` = ?"
+        const q = connection.query(sql, [data.title, data.description, data.nb_participants, data.datetime, data.departement,  data.ville, data.adresse, data.cedex, data.img, data.id ], function (err, res, fields) {
             console.log(this.sql);
             if (err) return clbk(err, null);
             return clbk(null, res);
         });
+        console.log(q.sql);
     };
 
     //get 1 annonce with user and theme
     const get = function getAnnonces(clbk, id) {
-        const query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id WHERE a.id = ? "
+        const query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.nb_participants, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', t.img as default_img, d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id WHERE a.id = ? "
         // var query = "SELECT * FROM annonce WHERE id=? "
+        connection.query(query, id, function (error, results, fields) {
+            if (error) return clbk(error, null);
+            return clbk(null, results);
+        });
+    };
+    const getOg = function getOg(clbk, id) {
+        const query = "SELECT * FROM annonce as a WHERE a.id = ? "
         connection.query(query, id, function (error, results, fields) {
             if (error) return clbk(error, null);
             return clbk(null, results);
@@ -58,10 +63,11 @@ const annonceModel = function annonceModel(connection) {
     //get all annonces with user and theme
     const getAll = function getAllAnnonces(clbk, filter) {
         // var query = "SELECT * FROM annonce ORDER BY created_at ASC";
-        var query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.nb_participants, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id"
+        var query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.nb_participants, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', t.img as default_img, d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id"
         if(Object.values(filter) != 0) {
             query += creatingParams(filter);
         }
+        query += " ORDER BY a.created_at ASC";
         const bendo = connection.query(query, function (error, results, fields) {
             if (error) return clbk(error, null);
             return clbk(null, results);
@@ -72,19 +78,23 @@ const annonceModel = function annonceModel(connection) {
     //get all annonce from 1 user
     const getUserAnnonce = function getUserAnnonce(clbk, id) {
         // const query = "SELECT * FROM user as u INNER JOIN annonce as a ON u.id = a.author WHERE u.id = ?";
-        const query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id WHERE u.id = ?"
-        connection.query(query, id, function (error, results, fields) {
+        const query = "SELECT a.id as 'id_annonce', a.title, a.description, a.datetime, a.departement, a.adresse, a.cedex, a.img, u.nickname, u.name, u.id as 'id_author', t.name as 'theme', t.img as default_img, d.nom as departement, v.name as ville FROM annonce as a INNER JOIN user as u ON a.author = u.id INNER JOIN theme as t ON t.id = a.theme INNER JOIN departement as d ON a.departement = d.id INNER JOIN ville as v ON a.ville = v.id WHERE u.id = ?"
+        const sql = connection.query(query, id, function (error, results, fields) {
             if (error) return clbk(error, null);
             return clbk(null, results);
         });
+        console.log(sql.sql);
     };
+
+    
     return {
         create,
         remove,
         update,
         get,
         getAll,
-        getUserAnnonce
+        getUserAnnonce,
+        getOg
     };
 };
 

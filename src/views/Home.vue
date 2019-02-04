@@ -11,7 +11,7 @@
 		<section class="how" id="how">
 			<article class="squatter">
 				<h2>Squatter</h2>
-				<p>Consultez tous les squats disponible avec la description et le thème de l'évènement.</p>
+				<p>Consultez tous les squats disponibles avec la description et le thème de l'évènement.</p>
 			</article>
 			<article class="recevoir">
 				<h2>Recevoir des squatteurs</h2>
@@ -19,7 +19,7 @@
 			</article>
 			<article class="top">
 				<h2>TOP Squatteurs</h2>
-				<p>Le TOP Squatteurs recense les 6 meilleurs squatteurs allez les voir !</p>
+				<p>Le TOP Squatteurs recense les 6 meilleurs squatteurs, allez les voir !</p>
 			</article>
 		</section>
 	</div>
@@ -67,8 +67,8 @@ export default {
 		flex-direction: column;
 		background-color: rgba(0,0,0,0.35);
 		width: 100%;
-		height: 100vh;		
-		z-index: 10;
+		height: 100vh;	
+		padding: 0 20px;	
 		h2{
 		text-align: center;
 		font-size: 30px;
@@ -138,8 +138,8 @@ export default {
 		}
 	}
 
-	@media screen and (max-width: 768px) {
-		.viens{
+		@media screen and (max-width: 1310px) {
+			.viens{
 			.what{
 				width: 100%;
 				font-size: 25px
@@ -160,7 +160,7 @@ export default {
 				}
 			}
 		}
-	}
+		}
 
 </style>
 

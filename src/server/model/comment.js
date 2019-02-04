@@ -46,7 +46,7 @@ const commentModel = function commentModel(connection) {
 
     const getAllAnnonceComs = function getAllAnnonceComs(clbk, id) {
         console.log(id);
-        var query = "SELECT c.id, c.updated_at, u.name, c.comment FROM annonce as a INNER JOIN comment as c ON a.id = c.id_annonce_com INNER JOIN user as u ON c.id_author_com = u.id WHERE a.id = ?"
+        var query = "SELECT c.id, c.id_author_com, c.created_at, u.nickname, c.comment FROM annonce as a INNER JOIN comment as c ON a.id = c.id_annonce_com INNER JOIN user as u ON c.id_author_com = u.id WHERE a.id = ? ORDER BY c.created_at ASC"
         connection.query(query, [id], function (error, results, fields) {
             console.log(this.sql);
             if (error) return clbk(error, null);

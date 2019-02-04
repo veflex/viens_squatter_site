@@ -2,8 +2,8 @@
     <section id="list" class="list">
         <div class="annonce" v-for="(annonce) in list" :key="annonce.id" @click="detail($event, annonce.id_annonce)">
             <article class="détails">
-                <h2>{{ annonce.title }} à {{ annonce.ville }}</h2>
-                <p>Il manque {{ annonce.nb_participants }} participants</p>
+                <h2>{{ annonce.title }}</h2>
+                <p>{{ annonce.ville }}, {{annonce.cedex}}</p>
             </article>
             <!-- <hr class="hr"> -->
         </div>

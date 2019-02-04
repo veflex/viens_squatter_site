@@ -37,6 +37,8 @@ const api = function api() {
 
     //IMPORT DES ROUTES DE L'API NOTE
     const noteRouter = require("./note")(database.connection);
+    //IMPORT DES ROUTES DE L'API NOTE
+    const inscritRouter = require("./inscrit")(database.connection);
 
 
 
@@ -48,6 +50,7 @@ const api = function api() {
     routers.push(cityRouter); // aggrégation des routeurs dans un tableau
     routers.push(departementRouter); // aggrégation des routeurs dans un tableau
     routers.push(noteRouter); // aggrégation des routeurs dans un tableau
+    routers.push(inscritRouter); // aggrégation des routeurs dans un tableau
 
     return { // définition des propriétés publiques du module /api/index.js
         version: APIVersion,

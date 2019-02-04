@@ -18,7 +18,6 @@ export default {
         getThemes : (ctx, that) => {
             axios.get(that.$backEndUrl + 'theme')
                 .then(function(res){
-                    console.log(res);
                     ctx.commit('SET_THEMES', res.data);
                 })
                 .catch(err => console.log(err))

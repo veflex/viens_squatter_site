@@ -18,7 +18,6 @@ export default {
         getDepartements : (ctx, that) => {
             axios.get(that.$backEndUrl + 'departement')
                 .then(function(res){
-                    console.log(res);
                     ctx.commit('SET_DEPARTEMENTS', res.data);
                 })
                 .catch(err => console.log(err))

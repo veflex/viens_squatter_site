@@ -18,7 +18,6 @@ export default {
         getCities : (ctx, that) => {
             axios.get(that.$backEndUrl + 'city')
                 .then(function(res){
-                    console.log(res);
                     ctx.commit('SET_CITIES', res.data);
                 })
                 .catch(err => console.log(err))

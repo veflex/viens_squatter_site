@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="squatter">
     <!-- <section class="annonces">
       <h1>TROUVE TON SQUAT !</h1>
       <div class="filter">
@@ -25,7 +25,9 @@
       </section>
       <section class="block image">
         <h2 class="title">Photo du squat</h2>
-        <img :src="image" alt="photo du squat">
+        <div class="image_container">
+          <img :src="require('./../assets/annonce_img/'+ image)" alt="photo du squat">
+        </div>
       </section>
       <section class="block details">
         <h2 class="title">Détails</h2>
@@ -52,11 +54,12 @@ export default {
     return {
     }
   },
-  created(){ 
+  created(){
+    this.$store.commit('annonce/SET_ONE_ANNONCE', {});
   },
   computed: {
     image(){
-      return this.$store.getters['annonce/getAnnonce'].img || "http://www.premiere.fr/sites/default/files/styles/scale_crop_1280x720/public/2018-04/VIDEO-Viens-squatter-le-nouveau-clip-de-Felicien-ex-de-Loft-Story.jpg"
+      return this.$store.getters['annonce/getAnnonce'].img || this.$store.getters['annonce/getAnnonce'].default_img || 'default.jpg'
     }
   },
   methods: {
@@ -71,9 +74,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .home{
-    height: auto;
-    // min-height: 100vh;
+  .squatter{
+    height: 100vh;
     padding-top: 1.4%;
   }
   
@@ -106,13 +108,19 @@ export default {
 
   .block{
     width: 49.5%;
+    min-width: 340px;
     border: 2px solid #273c75;
-    height: 35vh;
+    height: 40vh;
     margin-bottom: 1%;
     overflow: hidden;
-    min-width: 320px;
     margin-right: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     flex: 1;
+    h2{
+      width: 100%
+    };
     &:nth-child(3), &:nth-child(4){
       margin-right: 0
     }
@@ -129,14 +137,16 @@ export default {
     &.image{
       h2{
         margin-bottom: 0;
+        position: relative;
       }
-      img{
-        height: auto;
-        width: auto;
-        min-width: 100%;
-        min-height: 100%;
-        display: block;
-        margin: auto;
+      .image_container{
+        width: 100%;
+        height: 76%;
+        img{
+          height: 100%;
+          width: 100%;
+          object-fit: contain
+        }
       }
     }
     &.details{
@@ -152,17 +162,50 @@ export default {
         height: 76%;
      } 
     }
+    &.map{
+      height: 30vh;
+      min-width: 900px;
+    }
+    
   }
 
-  @media screen and (max-width: 1320px) {
+  @media screen and (max-width: 1380px) {
+    .squatter{
+      height: auto;
+    }
     .block{
-      // margin-right: 0;
+      width: 50%
+    }
+    .block:nth-child(2){
+      margin-right: 0;
+    }
+    .block:nth-child(3){
+      margin-right: 2%;
+    }
+    .block:nth-child(4){
+      height: 40vh;
+      min-width: 340px;
     }
   }
   @media screen and (max-width: 1100px) {
     .input_filter{
       flex-wrap: wrap;
       flex-direction: column;
+    }
+    .block{
+      flex: none;
+      width: 100%
+    }
+  }
+  @media screen and (max-width: 971px) {
+    .wrapper{
+      flex-direction: column;
+    }
+    .block{
+      width: 100%;
+    }
+    .block:nth-child(odd){
+      margin-right: 0
     }
   }
 

@@ -5,7 +5,7 @@
         </div>
         <div v-else>
             <h2>{{detail.title}}</h2>
-            <p>Par: <span><router-link :to="{name: 'user', params: {id: detail.id_author}}" class="author">{{ detail.name }}</router-link></span></p>
+            <p>Par: <span><router-link :to="{name: 'user', params: {id: detail.id_author}}" class="author">{{ detail.nickname }}</router-link></span></p>
             <p class="adress">Adresse: {{ detail.adresse }} {{detail.cedex}}</p>
             <p class="description">{{detail.description}}</p>
             <router-link :to="{name: 'squat', params: {id :detail.id_annonce}}" tag="p" class="redirect">Voir le Squat</router-link>
@@ -67,6 +67,7 @@
   }
   .redirect{
     font-size: 25px;
+    cursor: pointer;
     color: #b2224b;
     text-align: right;
     font-weight: bold;

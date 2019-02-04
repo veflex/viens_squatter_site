@@ -32,8 +32,19 @@ export default {
   .connexion {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
     align-items: center;
+    width: 100%;
     height: 100vh;
+  }
+
+  @media screen and (max-width: 480px){
+    .connexion{
+      height: auto;
+      .register, .login{
+        margin-bottom: 3%
+      }
+    }
   }
 </style>
 

@@ -15,6 +15,12 @@ const noteAPI = function noteAPI(connection) {
           res.send(dataset);
       }, req.params.id);
   });
+  
+  router.post('/verif_note', (req, res) => {
+      noteModel.verifNote((err, dataset) => {
+          res.send(dataset);
+      }, req.body);
+  });
 
   router.get('/top', (req, res) => {
       noteModel.getTop((err, dataset) => {

@@ -5,6 +5,8 @@ import city from './city'
 import theme from './theme'
 import user from './user'
 import departement from './departement'
+import inscrit from './inscrit'
+import comments from './comment'
 
 Vue.use(Vuex)
 
@@ -14,6 +16,8 @@ export default new Vuex.Store({
     city,
     theme,
     user,
-    departement
+    departement,
+    inscrit,
+    comments
   }
 })

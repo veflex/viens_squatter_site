@@ -29,11 +29,6 @@ export default {
     
   },
   mounted(){
-    const input = document.querySelectorAll('input');
-    console.log(input);
-    input.forEach(i => {
-        i.style = "min-width: 320px !important;"
-    });
   },
   computed: {
       cities(){

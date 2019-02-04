@@ -3,13 +3,32 @@
 const annonceAPI = function annonceAPI(connection) {
     const router = require("express").Router();
     const annonceModel = require("../model/annonce")(connection);
+    const multer = require('multer')
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            console.log(req.body);
+          cb(null, "src/assets/annonce_img/");
+        },
+        filename: function(req, file, cb) {
+          cb(null, Date.now() + "_" + file.originalname);
+        }
+      });
+      
+      const upload = multer({ storage });
+      
 
-    router.post('/annonce', (req, res) => {
+    router.post('/annonce', upload.single("uploader"), (req, res) => {
+        if (req.file){
+            req.body["img"] = req.file.filename;
+        } else {
+            req.body["img"] = null; 
+        }
         annonceModel.create((err, dataset) => {
             res.send(dataset);
         }, req.body); // post datas ici ...
     });
 
+    
     router.get('/annonce', (req, res) => {
         annonceModel.getAll((err, dataset) => {
             res.send(dataset);
@@ -18,6 +37,11 @@ const annonceAPI = function annonceAPI(connection) {
 
     router.get('/annonce/:id', (req, res) => {
         annonceModel.get((err, dataset) => {
+            res.send(dataset);
+        }, req.params.id);
+    });
+    router.get('/annonce_og/:id', (req, res) => {
+        annonceModel.getOg((err, dataset) => {
             res.send(dataset);
         }, req.params.id);
     });
@@ -35,14 +59,15 @@ const annonceAPI = function annonceAPI(connection) {
         }, req.params.id); // id de l'annonce ici ...
     });
 
-    router.patch('/annonce/:id', (req, res) => {
+    router.patch('/annonce/:id',upload.single("uploader"), (req, res) => {
+        console.log(req.body);
+        if (req.file){
+            req.body["img"] = req.file.filename;
+        }
         annonceModel.update((err, dataset) => {
             if (err) return res.status(500).send(err);
             else return res.status(200).send(dataset);
-        }, {
-            body: req.body,
-            id: req.params.id
-        });
+        },req.body);
     });
 
     return router;

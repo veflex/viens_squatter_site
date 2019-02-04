@@ -75,6 +75,7 @@ module.exports = (function myAuthLib() {
       if (u.hasOwnProperty(prop)) filteredUser[prop] = u[prop];
     }
 
+    // console.log(filteredUser);
     return filteredUser;
   };
 
