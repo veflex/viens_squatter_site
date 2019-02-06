@@ -28,7 +28,7 @@
             <h2> {{annonce.title}} </h2>
             <p @click="show = annonce.id_annonce" class="show">Voir les participants</p>
             <div v-if="show === annonce.id_annonce" @click="hide($event)" class="participants">
-              <participants :id="annonce.id_annonce"/>
+              <participants :id="annonce.id_annonce" :allowNotes="true"/>
             </div>
           </div>
         </div>
@@ -153,8 +153,17 @@ export default {
     margin-bottom: 0
   }
 
-  @media screen and (max-width: 1420px) {
-    
+  @media screen and (max-width: 800px) {
+    .created{
+      height: auto;
+    }
+    section{
+      &:first-of-type{
+        margin-top: 3%
+      }
+      width: 60% !important;
+      margin-bottom: 3%
+    }
   }
 
 </style>

@@ -3,12 +3,12 @@
     <h2 class="title">
       Liste des participants
     </h2>
-    <div class="list">
-      <div class="user" v-for="(user,i) in participants" :key="user.id">
-        <p>{{i+1}}. <router-link :to="{name: 'user', params: {id: user.id}}" tag="span">{{user.nickname}}</router-link></p>
-        <p class="note" @click="show = true">Le noter</p>
-        <msg :msg="msg" :class="css" :reset="reset"/>
-        <div v-if="show">
+    <div v-if="participants && participants.length" class="list">
+      <div class="user" v-for="(participant,i) in participants" :key="participant.id">
+        <p>{{i+1}}. <router-link :to="{name: 'user', params: {id: participant.id}}" tag="span">{{participant.nickname}}</router-link></p>
+        <p v-if="allowNotes" class="note" @click="show = true">Le noter</p>
+        <msg v-if="allowNotes" :msg="msg" :class="css" :reset="reset"/>
+        <div v-if="allowNotes && show">
           <select name="note" id="note" v-model="note">
             <option value="0">0</option>
             <option value="1">1</option>
@@ -21,6 +21,7 @@
         </div>
       </div>
     </div>
+    <p v-else class="nope">Il n'y a pas eu de participants :( </p>
   </section>
 </template>
 
@@ -37,11 +38,21 @@ export default {
       css: null
     }
   },
-  props: ["id"],
+  props: ["id", "allowNotes"],
   created(){
+    console.log(this.id);
     this.user = JSON.parse(localStorage.getItem('user'));
     this.$store.dispatch('inscrit/annonceRegistration', this.id).then(res=>{
-      this.participants = res.data
+      console.log(res);
+      if(this.allowNotes){
+        this.participants = res.data.filter(user => {
+          return user.id != this.user.id
+        })
+      } else {
+        this.participants = res.data;
+        this.$parent.$emit('nb_participants', this.participants.length)
+      }
+      console.log(this.participants);
     }).catch(err => {
       console.error(err);
     })
@@ -50,8 +61,10 @@ export default {
     sendNote(id){
       const data = {event: this.id, has_noted: this.user.id, is_noted: id, note: this.note};
       //on vérif si l'user a déja voté pour ce participant
+      console.log(data);
       this.$store.dispatch('user/verifIfNote', data)
         .then(res => {
+          console.log('ressss?', res);
           if(res.data.length){
             //si oui msg d'erreur
             this.msg = 'Vous avez déja noté cet utilisateur';
@@ -85,6 +98,10 @@ export default {
     height: auto;
     border: 2px solid #273c75;
     background: white;
+    .nope{
+      padding: 10px;
+      font-size: 20px;
+    }
     .user{
       padding: 5px;
       display: flex;

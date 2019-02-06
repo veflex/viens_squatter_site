@@ -22,6 +22,15 @@
           <h2 class="title">L'adresse</h2>
           <p>Le Squat est au <span>{{annonce.adresse}}</span>, <span>{{annonce.cedex}} {{annonce.ville}}</span>  </p>
         </section>
+        <section class="blocks inscrits">
+          <h2 class="title">Les inscrits</h2>
+          <div v-if="allRegistered && allRegistered.length">
+            <p class="inscrit" v-for="(participant, i) in allRegistered" :key="participant.id">
+              {{i + 1}}. {{participant.nickname}}
+            </p>
+          </div>
+          <p v-else>Il n'y a pas encore de squateurs !</p>
+        </section>
         <section v-if="isRegistered ||  (user && (annonce.id_author === user.id))" class="blocks comments">
           <h2 class="title">Les commentaires</h2>
           <div>
@@ -29,8 +38,11 @@
           </div>
         </section>
 
-          <router-link v-if="user && (annonce.id_author === user.id)" class="post" :to="{name: 'update', params: {id: annonce.id_annonce}}" tag="button">Modifier mon squat</router-link>
-        <button v-else-if="!user || !isRegistered" class="post" @click="register($event)">Je m'inscris !</button>
+          <p class="width" v-if="!isRegistered && allRegistered.length === annonce.nb_participants">Le squat est complet ! Vous pourrez vous inscrire si un squatteur se désinscrit !</p>
+          <router-link v-else-if="user && (annonce.id_author === user.id)" class="post" :to="{name: 'update', params: {id: annonce.id_annonce}}" tag="button">Modifier mon squat</router-link>
+          <div v-else-if="!user || !isRegistered"  class="width">
+            <button class="post" @click="register($event)">Je m'inscris !</button>
+          </div>
         <div v-else-if="isRegistered" class="unregister">
           <p>Vous êtes inscrit à ce Squat si vous voulez vous désinscrire cliquez en dessous !</p>
           <button @click="unregister($event)">Se désinscrire</button>
@@ -41,6 +53,7 @@
 
 <script>
 import comments from './../components/Comments'
+import participants from './../components/Participant'
 export default {
     data(){
         return {
@@ -78,25 +91,36 @@ export default {
                     }
                   })
               }
-              this.$store.dispatch('inscrit/annonceRegistration', this.annonce.id_annonce)
-                .then(res => {
-                  this.allRegistered = res
-                })
+              this.checkRegistered()
             })
 
     },
     methods: {
       register(){
         this.$store.dispatch('inscrit/annonceRegister', {annonce: this.annonce.id_annonce, user: this.user.id})
+          .then(() => {
+            this.checkRegistered()
+          })
         this.isRegistered = true
       },
       unregister(){
         this.$store.dispatch('inscrit/annonceUnregister', {annonce: this.annonce.id_annonce, user: this.user.id})
+          .then(() => {
+            this.checkRegistered()
+          })
         this.isRegistered = false
+      },
+      checkRegistered(){
+        this.$store.dispatch('inscrit/annonceRegistration', this.annonce.id_annonce)
+          .then(res => {
+            this.allRegistered = res.data;
+            console.log(this.allRegistered);
+          })
       }
     },
     components: {
-      comments
+      comments,
+      participants
     }
 }
 </script>
@@ -154,7 +178,7 @@ export default {
           position: relative;
         }
         .image_container{
-          height: 76%;
+          height: 81%;
           width: 100%;
           img{
           height: 100%;
@@ -169,13 +193,12 @@ export default {
         }
       }
       &.comments{
-        width: 91%;
         h2{
           margin-bottom: 0
         }
         div{
           width: 100%;
-          height: 76%;
+          height: 81%;
         }
       }
     }
@@ -187,6 +210,11 @@ export default {
     width: 100%;
     height: 100%;
     font-size: 20px;
+  }
+  .width{
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   .post, .unregister button{
         padding: 15px 20px;
@@ -223,6 +251,9 @@ export default {
     @media screen and (max-width: 660px){
       .blocks{
         margin-bottom: 3%
+      }
+      .comments{
+        width: 41% !important;
       }
     }
 </style>

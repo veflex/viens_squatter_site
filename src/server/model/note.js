@@ -37,16 +37,28 @@ const noteModel = function noteModel(connection) {
       });
   };
   const getVote = function getVote(clbk, id) {
+      console.log(id);
     var sql = '';
     if (id){
       sql = "SELECT AVG(note) as note, count(note) as votant FROM note WHERE id_is_noted = ?"
     } else {
-      sql = "SELECT id_is_noted as id_user, u.nickname as pseudo, AVG(note) as note, count(note) as votant FROM note as n INNER JOIN user as u ON n.id_is_noted = u.id GROUP BY id_is_noted ORDER BY note DESC"
+      sql = "SELECT id_is_noted as id_user, u.nickname as pseudo, AVG(note) as note, count(note) as votant FROM note as n INNER JOIN user as u ON n.id_is_noted = u.id GROUP BY id_is_noted ORDER BY note DESC LIMIT 5"
     }
-      connection.query(sql, [id], function (error, results, fields) {
+     const query =  connection.query(sql, [id], function (error, results, fields) {
           if (error) return clbk(error, null);
           return clbk(null, results);
       });
+      console.log(query.sql);
+  };
+  
+  const getTop = function getTop(clbk) {
+      const sql = "SELECT id_is_noted as id_user, u.nickname as pseudo, AVG(note) as note, count(note) as votant FROM note as n INNER JOIN user as u ON n.id_is_noted = u.id GROUP BY id_is_noted ORDER BY note DESC LIMIT 5"
+    
+     const query =  connection.query(sql, function (error, results, fields) {
+          if (error) return clbk(error, null);
+          return clbk(null, results);
+      });
+      console.log(query.sql);
   };
 
   return {
@@ -54,7 +66,8 @@ const noteModel = function noteModel(connection) {
     remove,
     update,
     getVote,
-    verifNote
+    verifNote,
+    getTop
   };
 };
 

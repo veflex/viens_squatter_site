@@ -131,7 +131,7 @@ export default {
       .liste{
         overflow-y: scroll;
         width: 100%;
-        height: 76%;
+        height: 81%;
       }
     }
     &.image{
@@ -141,7 +141,7 @@ export default {
       }
       .image_container{
         width: 100%;
-        height: 76%;
+        height: 81%;
         img{
           height: 100%;
           width: 100%;
@@ -159,7 +159,7 @@ export default {
         text-overflow: ellipsis;
         padding: 10px;
         width: 100%;
-        height: 76%;
+        height: 81%;
      } 
     }
     &.map{

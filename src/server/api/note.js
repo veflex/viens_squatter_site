@@ -3,14 +3,20 @@
 const noteAPI = function noteAPI(connection) {
   const router = require("express").Router();
   const noteModel = require("../model/note")(connection);
-
+  
+  router.get('/top', (req, res) => {
+      noteModel.getTop((err, dataset) => {
+          res.send(dataset);
+      });
+  });
   router.post('/note', (req, res) => {
       noteModel.vote((err, dataset) => {
           res.send(dataset);
       }, req.body); // post datas ici ...
   });
 
-  router.get('/note', (req, res) => {
+  router.get('/note/:id', (req, res) => {
+      console.log(req.params.id);
       noteModel.getNote((err, dataset) => {
           res.send(dataset);
       }, req.params.id);
@@ -22,11 +28,6 @@ const noteAPI = function noteAPI(connection) {
       }, req.body);
   });
 
-  router.get('/top', (req, res) => {
-      noteModel.getTop((err, dataset) => {
-          res.send(dataset);
-      }, req.params.id);
-  });
 
   router.delete('/note', (req, res) => {
       noteModel.remove((err, dataset) => {

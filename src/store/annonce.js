@@ -28,6 +28,9 @@ export default {
     },
     mutations: {
         SET_ONE_ANNONCE(state, newValue){
+            if(newValue.img === 'null'){
+                newValue.img = null
+            }
             state.oneAnnonce = newValue
         },
         SET_ALL_ANNONCES(state, newValue){

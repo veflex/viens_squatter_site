@@ -44,6 +44,8 @@
             <!-- code postal -->
             <input type="number" class="input" v-model="annonce.cedex" placeholder="Code postal">
         </section>
+          <msg :msg="msg" :class="css" :reset="reset"/>
+
         <button class="post" @click="post($event)">Poster le squat</button>
     </section>
 </template>
@@ -53,7 +55,7 @@
 import Selectize from 'vue2-selectize'
 import auth from './../utils/auth.js'
 import uploader from './../components/Uploader'
-
+import msg from './../components/CutomMsg'
 export default {
   data(){
     return {
@@ -70,6 +72,8 @@ export default {
         cedex: 75019,
         img: require('./../assets/annonce_img/default.jpg')
       },
+      css: '',
+      msg: '',
       dateMin: null,
       files: [],
       axiosConfig: {
@@ -120,6 +124,10 @@ export default {
     },
     post(evt){
       evt.preventDefault();
+      if(!auth.isLoggedIn()){
+        this.css ='error';
+        this.msg = 'Vous devez vous connecter pour créer un squat'
+      }
       const fd = new FormData();        
       Array.from(this.files).forEach(f => {
         fd.append("uploader", f, f.name);
@@ -132,11 +140,16 @@ export default {
         .then(res => {
           this.$router.push({name: 'squat', params: {id: res.data.insertId}})
         })
+    },
+    reset(){
+      this.msg =''
+      this.css = ""
     }
   },
   components: {
     Selectize,
-    uploader
+    uploader,
+    msg
   }
 }
 </script>

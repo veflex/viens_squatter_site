@@ -118,6 +118,17 @@ export default {
                   reject(err)
                 });
             })
+          },
+          getTop(ctx){
+            return new Promise((resolve, reject) => {
+              axios.get("http://localhost:3000/api/v1/top")
+                .then(res => {
+                  resolve(res)
+                })
+                .catch(err => {
+                  reject(err)
+                });
+            })
           }
     },
 }

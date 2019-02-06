@@ -111,7 +111,7 @@ export default {
     margin-bottom: 2%;
     padding: 10px;
     font-size: 30px;
-    height: 24%;
+    height: auto;
   }
 
     @media screen and (max-width: 1024px) {

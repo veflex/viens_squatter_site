@@ -39,19 +39,32 @@ export default {
     actions: {
       //register to the annonce
       annonceRegister(ctx, ids){
+        return new Promise((resolve, reject) => {
         axios.post(this._vm.$backEndUrl + 'annonce_reg', ids)
             .then(function(res){
+              resolve(res)
                 console.log(res);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+              reject(err)
+              console.log(err)
+            })
+        })
       },
       //unregister to the annonce
       annonceUnregister(ctx, ids){
-        axios.post(this._vm.$backEndUrl + 'annonce_unreg', ids)
-            .then(function(res){
-                console.log(res);
-            })
-            .catch(err => console.log(err))
+        return new Promise((resolve, reject) => {
+          axios.post(this._vm.$backEndUrl + 'annonce_unreg', ids)
+              .then(function(res){
+                resolve(res)
+                  console.log(res);
+              })
+              .catch(err => {
+                reject(err)
+                console.log(err)
+              })
+
+        })
       },
       //verif if the user is registered to the annonce
       verifRegister(ctx, ids){

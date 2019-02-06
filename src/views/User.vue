@@ -86,6 +86,7 @@ export default {
         margin-bottom: 3%;
         .block{
           width: 30%;
+          min-width: 320px;
           height: auto;
           border: 2px solid #273c75;
           &.img{
@@ -103,6 +104,7 @@ export default {
             }
           }
           &.note{
+            min-height: 200px;
             h2{
               margin-bottom: 0
             }
@@ -158,8 +160,28 @@ export default {
           }
         }
       }
+    }
 
-        
+    @media screen and (max-width: 650px) {
+      .user{
+        height: auto;
+        .block{
+          margin-bottom: 3%
+        }
+        .detail{
+          height: auto;
+        }
+        .squats{
+          width: 320px;
+          margin-bottom: 3%;
+          .liste{
+            height: 80%;
+          }
+          .squat{
+            width: 100% !important
+          }
+        }
+      }
     }
 </style>
 

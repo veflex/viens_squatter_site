@@ -60,9 +60,10 @@ const annonceAPI = function annonceAPI(connection) {
     });
 
     router.patch('/annonce/:id',upload.single("uploader"), (req, res) => {
-        console.log(req.body);
         if (req.file){
             req.body["img"] = req.file.filename;
+        } else if (req.body["img"] === 'null'){
+            req.body["img"] = null
         }
         annonceModel.update((err, dataset) => {
             if (err) return res.status(500).send(err);

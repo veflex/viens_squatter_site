@@ -1,5 +1,5 @@
 <template>
-  <section class="comments">
+  <section class="sec_comments">
     <div class="feed" id="feed">
       <div v-for="comment in comments" :key="comment.id">
         <div class="me" v-if="comment.id_author_com === user.id">
@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .comments{
+  .sec_comments{
     width: 100%;
     height: 100%;
     position: relative;

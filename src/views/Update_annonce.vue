@@ -1,5 +1,5 @@
 <template>
-    <section id="recevoir" class="recevoir">
+    <section id="update" class="update">
         <h1 class="title">Modifier votre squat !</h1>
         <section class="blocks general">
           <h2 class="title">Les infos générales</h2>
@@ -186,7 +186,7 @@ export default {
       }
     }
   
-  .recevoir{
+  .update{
     h1{
       width: 100%
     }
@@ -218,7 +218,7 @@ export default {
     padding: 15px 20px;
     border-radius: 5px;
     background: #b2224b;
-    width: 30%;
+    width: 50%;
     min-width: 150px;
     align-self: flex-end;
     border: 2px solid transparent;
@@ -236,6 +236,12 @@ export default {
 
 
     @media screen and (max-width: 660px){
+      h1{
+        margin-bottom: 3%
+      }
+      .update{
+        height: auto;
+      }
       .blocks{
         margin-bottom: 3%
       }
